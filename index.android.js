@@ -24,8 +24,27 @@ export default class ReactCalcApp extends Component {
         super()
         this.state = {
            numberOne : '10',
-           numberTwo : '20'
+           numberTwo : '20',
+           data: ''
         }
+
+        this.getData();
+  }
+
+  getData = () => {
+        fetch('https://jsonplaceholder.typicode.com/posts/1', {
+           method: 'GET'
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+           console.log(responseJson);
+           this.setState({
+              data: responseJson
+           })
+        })
+        .catch((error) => {
+           console.error(error);
+        });
   }
 
   updateNumberOne = (text) => {
@@ -46,6 +65,9 @@ export default class ReactCalcApp extends Component {
       <View style={styles.container}>
             <Text style={styles.welcome}>
               Welcome to React Native!
+            </Text>
+            <Text>
+              {this.state.data.body}
             </Text>
             <View style={styles.footer}>
                 <TextInput style={styles.input} maxLength={10} placeholder='First Number' keyboardType = 'numeric' onChangeText = {this.updateNumberOne}>
